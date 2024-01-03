@@ -1,7 +1,24 @@
+import { useEffect, useState } from "react";
 import RecipeCard from "../components/RecipeCard"
-
+import axios from "axios"
 
 const Home = () => {
+  const [recipes, setRecipes] = useState([]);
+
+  const getRecipes = async () => {
+    const res = await axios.get(
+      "https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast"
+    );
+    const data = await res.data;
+    setRecipes(data.meals);
+    console.log(data.meals);
+  }
+
+  useEffect(() => {
+    getRecipes();
+  }, [])
+
+
   return (
     <div className="flex flex-col justify-center items-center">
       <div>
@@ -13,8 +30,15 @@ const Home = () => {
           className="outline-none border px-5 py-3 rounded-xl w-[60vw] shadow-md focus:border-red-500"
         />
       </div>
-      <div className="my-10">
-        <RecipeCard/>
+      <div className="my-10 w-[70vw] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center items-center gap-3">
+        {recipes.map((recipe) => (
+          <RecipeCard
+            key={recipe.idMeal}
+            id={recipe.idMeal}
+            title={recipe.strMeal}
+            image={recipe.strMealThumb}
+          />
+        ))}
       </div>
     </div>
   )
