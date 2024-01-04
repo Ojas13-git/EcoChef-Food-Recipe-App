@@ -9,7 +9,7 @@ require("dotenv").config();
 
 connectDB();
 app.use(express.json());
-app.use(cors({ credentials: true }));
+app.use(cors({ origin: "https://eco-chef-food-recipe-550373ydt-ojas13-git.vercel.app", credentials: true }));
 app.use(cookieParser());
 
 app.use("/api", routes);
