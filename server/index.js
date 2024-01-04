@@ -9,7 +9,7 @@ require("dotenv").config();
 
 connectDB();
 app.use(express.json());
-app.use(cors({ origin: "*", credentials: true }));
+app.use(cors({ credentials: true }));
 app.use(cookieParser());
 
 app.use("/api", routes);
