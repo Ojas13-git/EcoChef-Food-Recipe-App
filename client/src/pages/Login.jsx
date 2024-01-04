@@ -1,10 +1,44 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login, setUser } from "../../redux/slices/authSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const res = await axios.post(
+      "http://localhost:5000/api/login",
+      {
+        email,
+        password,
+      },
+      { withCredentials: true }
+    );
+
+    const data = await res.data;
+    if (data.success) {
+      toast.success(data.message);
+      dispatch(login());
+      dispatch(setUser(data.user));
+      navigate("/");
+    }
+  };
+
   return (
     <div className="flex items-center justify-center h-[80vh]">
       <div className="w-full max-w-md">
-        <form className="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
+        <form
+          className="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4"
+          onSubmit={handleLogin}
+        >
           <div className="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4">
             Login
           </div>
@@ -21,6 +55,8 @@ const Login = () => {
               type="email"
               required
               placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-6">
@@ -37,6 +73,8 @@ const Login = () => {
               name="password"
               required
               autoComplete="false"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="flex items-center justify-between">
@@ -55,7 +93,7 @@ const Login = () => {
           </div>
         </form>
         <p className="text-center text-gray-500 text-xs">
-          &copy;2024 EcoChef. All rights reserved.
+          &copy;2023 Homechef. All rights reserved.
         </p>
       </div>
     </div>
