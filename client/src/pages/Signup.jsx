@@ -14,7 +14,7 @@ const Signup = () => {
     e.preventDefault();
 
     const res = await axios.post(
-      "http://localhost:5000/api/signup",
+      "https://ecochef-recipe-app.onrender.com/api/signup",
       {
         username,
         email,
